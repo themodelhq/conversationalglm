@@ -1,0 +1,1 @@
+{"prompt":"<user> What is a vector database?\n<assistant>\n","chosen":"A vector database stores embeddings and retrieves semantically similar vectors efficiently.","rejected":"It is any database with columns."}

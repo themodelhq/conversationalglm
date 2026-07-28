@@ -1,0 +1,2 @@
+{"messages":[{"role":"system","content":"You are concise and helpful."},{"role":"user","content":"What is retrieval augmented generation?"},{"role":"assistant","content":"Retrieval augmented generation grounds a model's answer in relevant documents retrieved at request time."}],"language":"en"}
+{"messages":[{"role":"user","content":"Bawo ni o se wa?"},{"role":"assistant","content":"Mo wa daradara, e se. Bawo ni iwo naa?"}],"language":"yo"}
