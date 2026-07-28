@@ -1,0 +1,2 @@
+from training.entrypoints import multimodal
+if __name__ == "__main__": multimodal("emotion_recognition")

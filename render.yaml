@@ -1,0 +1,33 @@
+databases:
+  - name: conversational-glm-postgres
+    databaseName: conversational_glm
+    user: conversational_glm
+    plan: basic-256mb
+services:
+  - type: web
+    name: conversational-glm-api
+    runtime: docker
+    dockerContext: .
+    dockerfilePath: ./Dockerfile.render
+    healthCheckPath: /health
+    envVars:
+      - key: GLM_ENV
+        value: production
+      - key: GLM_DATABASE_URL
+        fromDatabase:
+          name: conversational-glm-postgres
+          property: connectionString
+      - key: GLM_STORAGE_DIR
+        value: /var/data
+      - key: GLM_JWT_SECRET
+        generateValue: true
+      - key: GLM_CORS_ORIGINS
+        value: http://localhost:5173
+      - key: GLM_CORS_ORIGIN_REGEX
+        value: 'https://.*\.netlify\.app'
+      - key: GLM_API_RATE_LIMIT
+        value: "120"
+    disk:
+      name: conversational-glm-state
+      mountPath: /var/data
+      sizeGB: 20

@@ -1,0 +1,13 @@
+FROM python:3.11-slim
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PIP_NO_CACHE_DIR=1
+WORKDIR /app
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends ffmpeg libsndfile1 libgl1 && rm -rf /var/lib/apt/lists/*
+COPY . .
+RUN pip install --upgrade pip && pip install '.[train]'
+RUN mkdir -p /var/data
+COPY deployment/render-entrypoint.sh /usr/local/bin/render-entrypoint
+RUN chmod 755 /usr/local/bin/render-entrypoint
+EXPOSE 10000
+ENTRYPOINT ["/usr/local/bin/render-entrypoint"]
+HEALTHCHECK --interval=30s --timeout=5s --start-period=40s --retries=3 CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:' + __import__('os').environ.get('PORT','10000') + '/health')"
+CMD ["sh", "-c", "exec python -m uvicorn backend.main:app --host 0.0.0.0 --port ${PORT:-10000}"]

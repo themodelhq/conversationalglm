@@ -1,0 +1,45 @@
+services:
+  web:
+    build:
+      context: ./frontend
+    ports: ["5173:8080"]
+    depends_on:
+      api: {condition: service_started}
+  api:
+    build: .
+    ports: ["8000:8000"]
+    environment:
+      GLM_ENV: production
+      GLM_DATABASE_URL: postgresql+asyncpg://glm:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}@postgres:5432/glm
+      GLM_JWT_SECRET: ${GLM_JWT_SECRET:?set GLM_JWT_SECRET}
+      GLM_CORS_ORIGINS: ${GLM_CORS_ORIGINS:-http://localhost:5173}
+      GLM_MODEL_PATH: /models
+    volumes:
+      - ${GLM_MODEL_DIR:?set GLM_MODEL_DIR}:/models:ro
+    depends_on:
+      postgres: {condition: service_healthy}
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: glm
+      POSTGRES_USER: glm
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}
+    volumes: [postgres_data:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U glm -d glm"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  prometheus:
+    image: prom/prometheus:v2.54.1
+    volumes: [./deployment/prometheus.yml:/etc/prometheus/prometheus.yml:ro]
+    ports: ["9090:9090"]
+volumes:
+  postgres_data:
