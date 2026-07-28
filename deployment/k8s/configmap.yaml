@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: glm-config
+  namespace: conversational-glm
+data:
+  GLM_ENV: production
+  GLM_CORS_ORIGINS: https://assistant.example.com
+  GLM_DATABASE_URL: postgresql+asyncpg://glm:replace-in-secret@postgres.conversational-glm.svc.cluster.local:5432/glm

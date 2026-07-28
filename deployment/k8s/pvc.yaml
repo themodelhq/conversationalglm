@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: glm-models
+  namespace: conversational-glm
+spec:
+  accessModes: [ReadOnlyMany]
+  resources:
+    requests:
+      storage: 200Gi

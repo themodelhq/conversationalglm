@@ -1,0 +1,12 @@
+serve:
+  host: 0.0.0.0
+  port: 8000
+  workers: 1
+  model_path: null
+  device: auto
+  max_concurrent_generations: 4
+  max_new_tokens: 1024
+  temperature: 0.7
+  top_p: 0.9
+  enable_function_calling: true
+  enable_rag: true

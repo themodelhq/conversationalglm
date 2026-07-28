@@ -1,0 +1,33 @@
+run:
+  name: glm-dpo
+  output_dir: checkpoints/glm-dpo
+  seed: 42
+  resume_from: null
+model:
+  config: config/model.yaml
+  init_from: checkpoints/glm-sft/model.safetensors
+data:
+  train: data/processed/preferences_train.jsonl
+  validation: data/processed/preferences_validation.jsonl
+  tokenizer: artifacts/tokenizer
+training:
+  task: dpo
+  beta: 0.1
+  epochs: 1
+  max_steps: -1
+  batch_size: 1
+  gradient_accumulation_steps: 32
+  learning_rate: 0.00001
+  weight_decay: 0.01
+  warmup_ratio: 0.05
+  max_grad_norm: 1.0
+  mixed_precision: bf16
+  gradient_checkpointing: true
+  save_steps: 250
+  eval_steps: 100
+  logging_steps: 5
+  early_stopping_patience: 8
+  num_workers: 2
+  deepspeed: null
+  fsdp: false
+  tracking: tensorboard

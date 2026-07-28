@@ -1,0 +1,12 @@
+namespace: conversational-glm
+resources:
+  - namespace.yaml
+  - configmap.yaml
+  - pvc.yaml
+  - deployment.yaml
+  - service.yaml
+  - web-deployment.yaml
+  - web-service.yaml
+  - web-ingress.yaml
+  - hpa.yaml
+  - ingress.yaml

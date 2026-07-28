@@ -1,0 +1,32 @@
+run:
+  name: glm-sft
+  output_dir: checkpoints/glm-sft
+  seed: 42
+  resume_from: null
+model:
+  config: config/model.yaml
+  init_from: null
+data:
+  train: data/processed/train.jsonl
+  validation: data/processed/validation.jsonl
+  tokenizer: artifacts/tokenizer
+training:
+  task: sft
+  epochs: 3
+  max_steps: -1
+  batch_size: 2
+  gradient_accumulation_steps: 16
+  learning_rate: 0.0002
+  weight_decay: 0.1
+  warmup_ratio: 0.03
+  max_grad_norm: 1.0
+  mixed_precision: bf16
+  gradient_checkpointing: true
+  save_steps: 500
+  eval_steps: 250
+  logging_steps: 10
+  early_stopping_patience: 8
+  num_workers: 4
+  deepspeed: null
+  fsdp: false
+  tracking: tensorboard

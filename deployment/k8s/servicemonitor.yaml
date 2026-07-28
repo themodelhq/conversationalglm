@@ -1,0 +1,8 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: glm-api
+  namespace: conversational-glm
+spec:
+  selector: {matchLabels: {app: glm-api}}
+  endpoints: [{port: http, path: /metrics, interval: 15s}]

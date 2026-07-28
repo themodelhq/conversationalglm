@@ -1,0 +1,16 @@
+openapi: 3.1.0
+info:
+  title: Conversational GLM API
+  version: 0.1.0
+paths:
+  /health:
+    get: {summary: Service health status, responses: {'200': {description: Healthy}}}
+  /v1/auth/register:
+    post: {summary: Register account, responses: {'201': {description: Token issued}}}
+  /v1/auth/login:
+    post: {summary: Authenticate account, responses: {'200': {description: Token issued}}}
+  /v1/chat/completions:
+    post: {summary: Generate a conversational completion, security: [{bearerAuth: []}], responses: {'200': {description: Completion}}}
+components:
+  securitySchemes:
+    bearerAuth: {type: http, scheme: bearer, bearerFormat: JWT}

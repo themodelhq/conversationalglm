@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: glm-api
+  namespace: conversational-glm
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: glm-api}
+  template:
+    metadata:
+      labels: {app: glm-api}
+    spec:
+      nodeSelector:
+        accelerator: nvidia
+      containers:
+        - name: api
+          image: ghcr.io/your-org/conversational-glm:latest
+          imagePullPolicy: IfNotPresent
+          ports: [{containerPort: 8000, name: http}]
+          envFrom: [{configMapRef: {name: glm-config}}, {secretRef: {name: glm-secrets}}]
+          env: [{name: GLM_MODEL_PATH, value: /models}]
+          volumeMounts: [{name: models, mountPath: /models, readOnly: true}]
+          resources:
+            requests: {cpu: "2", memory: 12Gi, nvidia.com/gpu: "1"}
+            limits: {cpu: "8", memory: 32Gi, nvidia.com/gpu: "1"}
+          readinessProbe: {httpGet: {path: /health, port: http}, initialDelaySeconds: 20, periodSeconds: 10}
+          livenessProbe: {httpGet: {path: /health, port: http}, initialDelaySeconds: 40, periodSeconds: 20}
+      volumes: [{name: models, persistentVolumeClaim: {claimName: glm-models}}]

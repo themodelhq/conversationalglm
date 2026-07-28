@@ -1,0 +1,13 @@
+functions:
+  - name: calculator
+    description: Evaluate a basic arithmetic expression using safe operators.
+    parameters:
+      type: object
+      properties:
+        expression: {type: string}
+      required: [expression]
+  - name: current_time
+    description: Return current UTC time.
+    parameters:
+      type: object
+      properties: {}

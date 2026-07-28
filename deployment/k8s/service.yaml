@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: glm-api
+  namespace: conversational-glm
+  labels: {app: glm-api}
+spec:
+  selector: {app: glm-api}
+  ports: [{name: http, port: 80, targetPort: http}]

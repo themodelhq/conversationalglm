@@ -1,0 +1,17 @@
+datasets:
+  - name: open-conversations
+    format: jsonl
+    path: /datasets/conversations.jsonl
+    split: train
+    text_field: messages
+    license: Apache-2.0
+    allowed_for_training: true
+  - name: multilingual-speech
+    format: jsonl
+    path: /datasets/speech.jsonl
+    split: train
+    audio_field: audio_path
+    transcript_field: transcript
+    language_field: language
+    license: CC-BY-4.0
+    allowed_for_training: true
